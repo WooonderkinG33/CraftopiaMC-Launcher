@@ -56,6 +56,8 @@ export const dict = {
     modsDownloading: "Моды: синхронизация",
     modsOk: "Моды: OK",
     statusResetting: "ГОТОВ К ПЕРЕУСТАНОВКЕ",
+    updating: "Обновление...",
+    updateDone: "Лаунчер будет перезапущен",
   },
   en: {
     sidebarPlay: "Play",
@@ -110,6 +112,8 @@ export const dict = {
     modsDownloading: "Mods: syncing",
     modsOk: "Mods: OK",
     statusResetting: "READY FOR REINSTALL",
+    updating: "Updating...",
+    updateDone: "Launcher will restart",
   }
 };
 

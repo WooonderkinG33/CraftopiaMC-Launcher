@@ -41,7 +41,22 @@ const dict = {
   en: { readMore: "Read more", exit: "EXIT", play: "PLAY", wait: "WAIT" }
 };
 
-type PageState = 'idle' | 'busy' | 'error' | 'done';
+type PageState = 'idle' | 'busy' | 'error' | 'done' | 'updating';
+
+declare global {
+  interface Window {
+    go?: {
+      main?: {
+        App?: {
+          StartRuntimePreparation?: () => void;
+          KillMinecraft?: () => void;
+          CheckForUpdate?: () => Promise<{available: boolean; version: string; sha256: string}>;
+          ApplyUpdate?: () => Promise<boolean>;
+        };
+      };
+    };
+  }
+}
 
 export default function PlayPage() {
   const { lang, t, tPhase } = useLanguage();
@@ -76,6 +91,20 @@ export default function PlayPage() {
           setSpeed('');
           setHasError(false);
           setErrorCountdown(0);
+        } else if (msg === 'updating') {
+          setPageState('updating');
+          setProgress(pct);
+          setStatusText(tPhase('updating', pct));
+          setSpeed('');
+          setHasError(false);
+          setErrorCountdown(0);
+        } else if (msg === 'updateDone') {
+          setPageState('updating');
+          setProgress(100);
+          setStatusText(t.statusReady + ' ✓ ' + tPhase('updateDone'));
+          setSpeed('');
+          setHasError(false);
+          setErrorCountdown(0);
         } else if ((pct === 0 && msg === 'MC_EXITED') || (pct === 0 && msg === 'MC_KILLED')) {
           setPageState('idle');
           setProgress(0);
@@ -94,6 +123,17 @@ export default function PlayPage() {
       });
     }
   }, [tPhase]);
+
+  // Auto-check update on startup
+  useEffect(() => {
+    if (window.go?.main?.App?.CheckForUpdate) {
+      window.go.main.App.CheckForUpdate().then((info: any) => {
+        if (info && info.available && window.go?.main?.App?.ApplyUpdate) {
+          window.go.main.App.ApplyUpdate().catch(() => {});
+        }
+      }).catch(() => {});
+    }
+  }, []);
 
   const handleLaunchToggle = () => {
     if (pageState === 'done') {
@@ -119,6 +159,7 @@ export default function PlayPage() {
   };
 
   const getProgressColor = () => {
+    if (pageState === 'updating') return "bg-[#22C55E]";
     if (hasError) return "bg-[#EF4444]";
     if (pageState === 'done') return "bg-[#94A3B8]";
     if (pageState === 'idle') return "bg-[#4B5563]";

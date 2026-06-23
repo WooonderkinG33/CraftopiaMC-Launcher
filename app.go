@@ -106,6 +106,7 @@ func (a *App) startup(ctx context.Context) {
 	})
 	runtime.EventsOn(ctx, "quitApp", func(...interface{}) {
 		killMC(&a.mcCmd)
+		modules.CleanupPidFile()
 		runtime.Quit(ctx)
 	})
 
@@ -210,6 +211,37 @@ func (a *App) showWindowFromSecondInstance() {
 		runtime.WindowCenter(a.ctx)
 		a.windowVisible = true
 	}
+}
+
+func (a *App) CheckForUpdate() *modules.UpdateInfo {
+	info, err := modules.CheckForUpdate()
+	if err != nil {
+		modules.Log(fmt.Sprintf("[UPDATE] Check failed: %v", err))
+		return &modules.UpdateInfo{Available: false}
+	}
+	return info
+}
+
+func (a *App) ApplyUpdate() bool {
+	downloaded, err := modules.DownloadUpdate(func(pct int) {
+		a.emit("updating", pct, "", 0, 0)
+	})
+	if err != nil {
+		modules.Log(fmt.Sprintf("[UPDATE] Download failed: %v", err))
+		a.emitFatal("errorLaunch")
+		return false
+	}
+	a.emit("updating", 100, "", 0, 0)
+	time.Sleep(500 * time.Millisecond)
+	a.emit("updateDone", 0, "", 0, 0)
+	time.Sleep(2 * time.Second)
+
+	if err := modules.ApplyUpdate(downloaded); err != nil {
+		modules.Log(fmt.Sprintf("[UPDATE] Apply failed: %v", err))
+		return false
+	}
+	runtime.Quit(a.ctx)
+	return true
 }
 
 func (a *App) prepareRuntime() {
