@@ -210,7 +210,15 @@ func (a *App) prepareRuntime() {
 	if a.ctx == nil { return }
 
 	modules.PrepareMinecraft(func(key string, pct int, speed string, dl int64, total int64) {
-		a.emit(key, 20+int(float64(pct)*0.75), speed, dl, total)
+		a.emit(key, 20+int(float64(pct)*0.60), speed, dl, total)
+	})
+	if a.ctx == nil { return }
+
+	// Mods 80-95
+	a.retryPhase("Mods", func() error {
+		return modules.SyncMods(func(key string, pct int, speed string, dl int64, total int64) {
+			a.emit(key, 80+int(float64(pct)*0.15), speed, dl, total)
+		})
 	})
 	if a.ctx == nil { return }
 

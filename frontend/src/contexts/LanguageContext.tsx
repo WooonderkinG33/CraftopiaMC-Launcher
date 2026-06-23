@@ -52,6 +52,9 @@ export const dict = {
     launching: "Запуск игры...",
     gameRunning: "ИГРА ЗАПУЩЕНА",
     errorLaunch: "Ошибка запуска, проверьте логи",
+    modsCheck: "Моды: проверка",
+    modsDownloading: "Моды: синхронизация",
+    modsOk: "Моды: OK",
   },
   en: {
     sidebarPlay: "Play",
@@ -102,6 +105,9 @@ export const dict = {
     launching: "Launching game...",
     gameRunning: "GAME RUNNING",
     errorLaunch: "Launch error, check the logs",
+    modsCheck: "Mods: checking",
+    modsDownloading: "Mods: syncing",
+    modsOk: "Mods: OK",
   }
 };
 
@@ -119,7 +125,9 @@ export const LanguageProvider = ({ children, initialLang }: { children: ReactNod
   const t = dict[lang];
   const tPhase = useCallback((key: string, pct?: number) => {
     const phrase = (t as any)[key] || key;
-    return pct !== undefined ? `${phrase} ${pct}%` : phrase;
+    const hasPct = pct !== undefined && pct > 0 && pct < 100;
+    const isDownload = key.includes('Downloading') || key.includes('Unpacking');
+    return hasPct && isDownload ? `${phrase} ${pct}%` : phrase;
   }, [t]);
   return (
     <ctx.Provider value={{ lang, setLang, t, tPhase }}>

@@ -118,7 +118,6 @@ func downloadAndExtractJava(progressCb func(downloaded, total int64, percent int
 
 func PrepareRuntimeWithStatus(statusCb func(key string, pct int, speed string, dl int64, total int64)) error {
 	statusCb("javaChecking", 0, "", 0, 0)
-	time.Sleep(300 * time.Millisecond)
 
 	if err := verifyJavaIntegrity(); err == nil {
 		Log("[RUNTIME] Java integrity OK")

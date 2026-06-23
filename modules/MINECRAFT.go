@@ -77,7 +77,6 @@ func processClient(m *MojangData, mcDir string, statusCb func(string, int, strin
 	os.MkdirAll(filepath.Dir(clientPath), 0755)
 
 	statusCb("mcClientCheck", 0, "", 0, 0)
-	time.Sleep(50 * time.Millisecond)
 
 	if m.ClientSHA1 != "" && FileMatchesHash(clientPath, m.ClientSHA1) {
 		Log("[MINECRAFT] Client OK")
@@ -113,7 +112,6 @@ func processLibs(m *MojangData, mcDir string, statusCb func(string, int, string,
 	}
 
 	statusCb("mcLibsCheck", 0, "", 0, int64(len(m.Libs)))
-	time.Sleep(50 * time.Millisecond)
 
 	type libCheck struct {
 		url  string
@@ -217,7 +215,6 @@ func ensureFabricDeps() {
 
 func processAssets(m *MojangData, statusCb func(string, int, string, int64, int64), mcDir string) error {
 	statusCb("mcAssetsCheck", 0, "", 0, 0)
-	time.Sleep(50 * time.Millisecond)
 
 	resp, err := http.Get(m.AssetURL)
 	if err != nil {
