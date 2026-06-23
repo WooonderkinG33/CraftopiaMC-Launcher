@@ -13,6 +13,8 @@ declare global {
           SaveSettings?: (language: string, ramMB: number) => Promise<boolean>;
           StartRuntimePreparation?: () => void;
           HideToTray?: () => void;
+          KillMinecraft?: () => void;
+          ResetLauncher?: () => Promise<boolean>;
         };
       };
     };
@@ -44,12 +46,15 @@ export default function DesktopLayout({ children, initialRamMB, initialMaxRam, o
   };
 
   const handleClose = () => {
-    if (window.go?.main?.App?.HideToTray) {
-      try { window.go.main.App.HideToTray(); } catch (_) {}
-    } else if (window.runtime?.Quit) {
+    // Kill Minecraft if running
+    if (window.go?.main?.App?.KillMinecraft) {
+      try { window.go.main.App.KillMinecraft(); } catch (_) {}
+    }
+    // Quit app
+    if (window.runtime?.Quit) {
       window.runtime.Quit();
     } else {
-      console.log('[Wails Mock]: Hide to tray');
+      console.log('[Wails Mock]: Quit');
     }
   };
 
@@ -73,13 +78,27 @@ export default function DesktopLayout({ children, initialRamMB, initialMaxRam, o
 
   const handleResetLaunchEngine = () => {
     setIsResetAnimating(true);
-    setTimeout(() => {
-      resetLauncher();
-      setIsResetAnimating(false);
-      setIsConfirmResetOpen(false);
-      setShowSuccessToast(true);
-      setTimeout(() => setShowSuccessToast(false), 3000);
-    }, 1500);
+    if (window.go?.main?.App?.ResetLauncher) {
+      window.go.main.App.ResetLauncher().then((ok: boolean) => {
+        setIsResetAnimating(false);
+        setIsConfirmResetOpen(false);
+        if (ok) {
+          setShowSuccessToast(true);
+          setTimeout(() => setShowSuccessToast(false), 3000);
+        }
+      }).catch(() => {
+        setIsResetAnimating(false);
+        setIsConfirmResetOpen(false);
+      });
+    } else {
+      setTimeout(() => {
+        resetLauncher();
+        setIsResetAnimating(false);
+        setIsConfirmResetOpen(false);
+        setShowSuccessToast(true);
+        setTimeout(() => setShowSuccessToast(false), 3000);
+      }, 1500);
+    }
   };
 
   return (

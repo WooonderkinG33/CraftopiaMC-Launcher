@@ -38,6 +38,8 @@ func onTrayReady() {
 	})
 
 	Log("[TRAY] System tray initialized successfully")
+
+	Log("[TRAY] System tray initialized successfully")
 }
 
 func onTrayExit() {

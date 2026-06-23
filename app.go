@@ -140,6 +140,19 @@ func (a *App) GetRecommendedRAM() int {
 }
 func (a *App) GetMaxRamMB() int { return modules.GetMaxRamMB() }
 
+func (a *App) ResetLauncher() bool {
+	if a.mcCmd != nil && a.mcCmd.Process != nil {
+		modules.Log("[RESET] MC is running, cannot reset")
+		return false
+	}
+	if err := modules.ResetAllData(); err != nil {
+		modules.Log(fmt.Sprintf("[RESET] Failed: %v", err))
+		return false
+	}
+	modules.Log("[RESET] All data cleared")
+	return true
+}
+
 // SaveSettings — единственный способ сохранить настройки. Go сам валидирует и пишет файл.
 func (a *App) SaveSettings(language string, ramMB int) bool {
 	s := modules.LauncherSettings{Language: language, RamMB: ramMB}

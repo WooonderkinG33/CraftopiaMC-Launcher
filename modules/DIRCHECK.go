@@ -119,3 +119,20 @@ func isAllowedRootFile(name string) bool {
 	}
 	return false
 }
+
+func ResetAllData() error {
+	Log("[DIRCHECK] Resetting all game data...")
+	baseDir := OSInfo.DataDir
+	for dir := range allowedRootDirs {
+		path := filepath.Join(baseDir, dir)
+		if err := os.RemoveAll(path); err != nil {
+			Log(fmt.Sprintf("[DIRCHECK] Failed to remove %s: %v", dir, err))
+			return fmt.Errorf("failed to remove %s: %w", dir, err)
+		}
+		Log(fmt.Sprintf("[DIRCHECK] Removed: %s", dir))
+	}
+	// Recreate empty directories
+	EnsureDirectoryStructure()
+	Log("[DIRCHECK] Reset complete, directories recreated")
+	return nil
+}

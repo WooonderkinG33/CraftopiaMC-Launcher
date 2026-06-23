@@ -55,6 +55,7 @@ export const dict = {
     modsCheck: "Моды: проверка",
     modsDownloading: "Моды: синхронизация",
     modsOk: "Моды: OK",
+    statusResetting: "ГОТОВ К ПЕРЕУСТАНОВКЕ",
   },
   en: {
     sidebarPlay: "Play",
@@ -108,6 +109,7 @@ export const dict = {
     modsCheck: "Mods: checking",
     modsDownloading: "Mods: syncing",
     modsOk: "Mods: OK",
+    statusResetting: "READY FOR REINSTALL",
   }
 };
 
