@@ -1,0 +1,33 @@
+# Binaries
+compiled/
+*.exe
+
+# Build artifacts
+build/bin/
+build/frontend/
+frontend/dist/
+
+# Dependencies
+frontend/node_modules/
+
+# Generated icons (from build.sh)
+modules/tray-icon.png
+modules/tray_icon.ico
+
+# User data & logs
+*.log
+settings.json
+.storage.aes
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Archives
+*.zip

@@ -1,0 +1,97 @@
+name: Build
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.1-dev libayatana-appindicator3-dev imagemagick
+
+      - name: Generate icons
+        run: |
+          convert assets/appicon.png -resize 256x256 modules/tray-icon.png
+          convert assets/appicon.png -resize 256x256 modules/tray_icon.ico
+
+      - name: Install Wails
+        run: go install github.com/wailsapp/wails/v2/cmd/wails@v2.12.0
+
+      - name: Install frontend deps
+        run: npm ci
+        working-directory: frontend
+
+      - name: Build Linux
+        run: |
+          VERSION=$(date +"%Y.%-m.%-d.%H%M")
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          wails build -clean -tags webkit2_41 -platform linux/amd64 -ldflags "-X 'craftopiamc-launcher/core.AppVersion=$VERSION'" -o "launcher"
+          cp build/bin/launcher launcher-linux
+
+      - name: Build Windows
+        run: |
+          wails build -clean -platform windows/amd64 -ldflags "-X 'craftopiamc-launcher/core.AppVersion=$VERSION'" -o "launcher.exe"
+          cp build/bin/launcher.exe launcher-windows.exe
+
+      - name: Create latest.json
+        run: |
+          LINUX_HASH=$(sha256sum launcher-linux | cut -d' ' -f1)
+          WIN_HASH=$(sha256sum launcher-windows.exe | cut -d' ' -f1)
+          cat > latest.json << EOF
+          {
+            "version": "$VERSION",
+            "linux": {
+              "sha256": "$LINUX_HASH",
+              "filename": "launcher-linux"
+            },
+            "windows": {
+              "sha256": "$WIN_HASH",
+              "filename": "launcher-windows.exe"
+            }
+          }
+          EOF
+          echo "latest.json created (v$VERSION)"
+
+      - name: Delete old latest release
+        run: |
+          gh release delete latest --cleanup-tag --yes 2>/dev/null || true
+
+      - name: Create latest release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: latest
+          body: |
+            ## CraftopiaMC Launcher ${{ env.VERSION }}
+
+            Auto-built from main branch. Always the latest version.
+
+            **SHA256 checksums:**
+            ```
+            Linux:   $(sha256sum launcher-linux | cut -d' ' -f1)
+            Windows: $(sha256sum launcher-windows.exe | cut -d' ' -f1)
+            ```
+          files: |
+            launcher-linux
+            launcher-windows.exe
+            latest.json
+          make_latest: true

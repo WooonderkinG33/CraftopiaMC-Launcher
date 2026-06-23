@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CraftopiaMC Launcher</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@100;200;300;400;600;800&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        background: #0F1115; margin: 0; padding: 0;
+        display: flex; align-items: center; justify-content: center;
+        height: 100vh; width: 100vw; overflow: hidden;
+      }
+      #splash {
+        display: flex; flex-direction: column; align-items: center; gap: 24px;
+        opacity: 1; transition: opacity 0.3s ease-out;
+      }
+      #splash.hide { opacity: 0; }
+      .splash-loader {
+        display: block; position: relative;
+        width: 48px; height: 48px;
+      }
+      .splash-loader:before, .splash-loader:after {
+        content: ''; position: absolute; top: 0; left: 0;
+        width: 100%; height: 100%; border-radius: 50%;
+        border: 4px solid transparent;
+      }
+      .splash-loader:before {
+        border-top-color: #ffffff; border-bottom-color: #ffffff;
+        animation: spin 1.5s linear infinite;
+      }
+      .splash-loader:after {
+        border-top-color: #94A3B8; border-bottom-color: #94A3B8;
+        animation: spin 1.5s linear infinite; animation-delay: 0.3s;
+      }
+      @keyframes spin { 0% { transform: rotateZ(0deg); } 100% { transform: rotateZ(360deg); } }
+      .splash-title {
+        color: rgba(255,255,255,0.6); font-family: Inter, sans-serif;
+        font-size: 14px; font-weight: 700; letter-spacing: 0.25em;
+        text-transform: uppercase; font-style: italic;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <div id="splash">
+        <div class="splash-loader"></div>
+        <span class="splash-title">CraftopiaMC Launcher</span>
+      </div>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

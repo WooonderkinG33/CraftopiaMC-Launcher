@@ -1,0 +1,18 @@
+{
+  "name": "craftopiamc-launcher",
+  "assetdir": "frontend",
+  "frontend:install": "",
+  "frontend:build": "npm run build",
+  "frontend:dev:watcher": "",
+  "frontend:dev:serverUrl": "",
+  "author": {
+    "name": "CraftopiaMC",
+    "email": ""
+  },
+  "Windows": {
+    "icon": "build/windows/icon.ico"
+  },
+  "Linux": {
+    "icon": "assets/appicon.png"
+  }
+}
