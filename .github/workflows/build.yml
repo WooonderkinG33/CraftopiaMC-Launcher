@@ -45,27 +45,27 @@ jobs:
           VERSION=$(date +"%Y.%-m.%-d.%H%M")
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           wails build -clean -tags webkit2_41 -platform linux/amd64 -ldflags "-X 'craftopiamc-launcher/core.AppVersion=$VERSION'" -o "launcher"
-          cp build/bin/launcher launcher-linux
+          cp build/bin/launcher "CraftopiaMC-Launcher-linux"
 
       - name: Build Windows
         run: |
           wails build -clean -platform windows/amd64 -ldflags "-X 'craftopiamc-launcher/core.AppVersion=$VERSION'" -o "launcher.exe"
-          cp build/bin/launcher.exe launcher-windows.exe
+          cp build/bin/launcher.exe "CraftopiaMC-Launcher-windows.exe"
 
       - name: Create latest.json
         run: |
-          LINUX_HASH=$(sha256sum launcher-linux | cut -d' ' -f1)
-          WIN_HASH=$(sha256sum launcher-windows.exe | cut -d' ' -f1)
+          LINUX_HASH=$(sha256sum "CraftopiaMC-Launcher-linux" | cut -d' ' -f1)
+          WIN_HASH=$(sha256sum "CraftopiaMC-Launcher-windows.exe" | cut -d' ' -f1)
           cat > latest.json << EOF
           {
             "version": "$VERSION",
             "linux": {
               "sha256": "$LINUX_HASH",
-              "filename": "launcher-linux"
+              "filename": "CraftopiaMC-Launcher-linux"
             },
             "windows": {
               "sha256": "$WIN_HASH",
-              "filename": "launcher-windows.exe"
+              "filename": "CraftopiaMC-Launcher-windows.exe"
             }
           }
           EOF
@@ -87,11 +87,11 @@ jobs:
 
             **SHA256 checksums:**
             ```
-            Linux:   $(sha256sum launcher-linux | cut -d' ' -f1)
-            Windows: $(sha256sum launcher-windows.exe | cut -d' ' -f1)
+            Linux:   $(sha256sum "CraftopiaMC-Launcher-linux" | cut -d' ' -f1)
+            Windows: $(sha256sum "CraftopiaMC-Launcher-windows.exe" | cut -d' ' -f1)
             ```
           files: |
-            launcher-linux
-            launcher-windows.exe
+            CraftopiaMC-Launcher-linux
+            CraftopiaMC-Launcher-windows.exe
             latest.json
           make_latest: true
