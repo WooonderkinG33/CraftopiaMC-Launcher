@@ -45,6 +45,7 @@ func (a *App) startup(ctx context.Context) {
 	settings := modules.LoadSettings()
 	modules.SetLanguage(settings.Language)
 	modules.Log(fmt.Sprintf("[SETTINGS] lang=%s ram=%dMB", settings.Language, settings.RamMB))
+	modules.ExtractIcon()
 
 	screens, _ := runtime.ScreenGetAll(ctx)
 	if len(screens) > 0 {
@@ -234,13 +235,23 @@ func (a *App) prepareRuntime() {
 	a.mcCmd = cmd
 
 	modules.WaitForLaunch(cmd,
-		func() { a.emit("gameRunning", 100, "", 0, 0) },
+		func() {
+			a.emit("gameRunning", 100, "", 0, 0)
+			// Hide launcher when MC window appears
+			runtime.Hide(a.ctx)
+			a.windowVisible = false
+		},
 		func(err error) {
 			a.emitFatal("errorLaunch")
 			modules.Log(fmt.Sprintf("[LAUNCH] Error: %v", err))
 		},
 	)
 	a.mcCmd = nil
+	// Show launcher when MC exits
+	runtime.WindowShow(a.ctx)
+	runtime.WindowSetSize(a.ctx, a.targetW, a.targetH)
+	runtime.WindowCenter(a.ctx)
+	a.windowVisible = true
 	a.emit("MC_EXITED", 0, "", 0, 0)
 	modules.Log("[RUNTIME] MC closed, ready")
 }

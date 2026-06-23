@@ -10,6 +10,8 @@ import (
 	"runtime"
 	"strings"
 	"time"
+
+	"craftopiamc-launcher/core"
 )
 
 const MinecraftPlayerName = "CRAFTOPIAMC_PLAYER"
@@ -152,6 +154,13 @@ func buildJvmArgs(ramMB int) []string {
 		"-XX:G1RSetUpdatingPauseTimePercent=5", "-XX:SurvivorRatio=32",
 		"-XX:+PerfDisableSharedMem", "-XX:MaxTenuringThreshold=1",
 	}
+
+	// Pass icon path + version to Minecraft (Fabric mod reads this)
+	iconPath := GetIconPath()
+	if _, err := os.Stat(iconPath); err == nil {
+		base = append(base, "-Dcraftopiamc.iconPath="+iconPath)
+	}
+	base = append(base, "-Dcraftopiamc.launcherVersion="+core.AppVersion)
 	if ramGB < 4 {
 		return append([]string{fmt.Sprintf("-Xms%dM", ramMB), fmt.Sprintf("-Xmx%dM", ramMB)}, base...)
 	}
@@ -211,7 +220,7 @@ func buildGameArgs() []string {
 		"--uuid", generateUUID(MinecraftPlayerName),
 		"--accessToken", "0",
 		"--userType", "mojang",
-		"--versionType", "release",
+		"--versionType", "CraftopiaMC",
 	}
 	if runtime.GOOS == "linux" {
 		args = append(args, "--nativeLauncherVersion", "linux")

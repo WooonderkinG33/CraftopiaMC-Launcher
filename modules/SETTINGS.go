@@ -98,6 +98,22 @@ func GetMaxRamMB() int {
 	return max
 }
 
+func GetIconPath() string {
+	return filepath.Join(OSInfo.DataDir, "runtime", "launcher-icon.png")
+}
+
+func ExtractIcon() {
+	path := GetIconPath()
+	if len(trayIcon) == 0 {
+		return
+	}
+	if err := os.WriteFile(path, trayIcon, 0644); err != nil {
+		Log(fmt.Sprintf("[ICON] Failed to extract: %v", err))
+	} else {
+		Log(fmt.Sprintf("[ICON] Extracted to %s (%d bytes)", path, len(trayIcon)))
+	}
+}
+
 // Простейшая локализация для Go-кода
 var currentLang string
 
