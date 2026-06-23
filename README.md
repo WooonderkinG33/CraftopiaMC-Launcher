@@ -43,9 +43,9 @@ and keeping mods synchronized. Designed as a modern, minimal alternative to the 
 
 ## Screenshots
 
-| Launcher window | Active download |
-|----------------|-----------------|
-| ![Main](screenshots/main.png) | ![Download](screenshots/download.png) |
+| Launcher window | Settings |
+|----------------|----------|
+| ![Main](screenshots/main.png) | ![Settings](screenshots/settings.png) |
 
 ---
 
