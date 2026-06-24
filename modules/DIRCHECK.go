@@ -10,6 +10,7 @@ var allowedRootDirs = map[string]bool{
 	"logs":      true,
 	"minecraft": true,
 	"runtime":   true,
+	"auth":      true,
 }
 
 var allowedFiles = map[string]map[string]bool{
