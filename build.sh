@@ -22,6 +22,7 @@ if [ -f "$ICON_SRC" ]; then
     echo "=> Converting icons..."
     convert "$ICON_SRC" -resize 256x256 "$SCRIPT_DIR/modules/tray-icon.png" 2>/dev/null && echo "   tray-icon.png: done"
     convert "$ICON_SRC" -resize 256x256 "$SCRIPT_DIR/modules/tray_icon.ico" 2>/dev/null && echo "   tray_icon.ico: done"
+    convert "$ICON_SRC" -resize 256x256 "$SCRIPT_DIR/build/windows/icon.ico" 2>/dev/null && echo "   build/windows/icon.ico: done"
     convert "$ICON_SRC" -resize 256x256 "$SCRIPT_DIR/assets/appicon.png" 2>/dev/null && echo "   appicon.png: done"
 fi
 

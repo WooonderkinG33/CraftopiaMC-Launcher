@@ -52,10 +52,10 @@ func (a *App) startup(ctx context.Context) {
 		s := screens[0]
 		sw := s.Size.Width
 		sh := s.Size.Height
-		w := int(float64(sw) * 0.5)
-		h := int(float64(sh) * 0.65)
-		if w < 640 { w = 640 }
-		if h < 480 { h = 480 }
+    w := int(float64(sw) * 0.60)
+    h := int(float64(sh) * 0.65)
+    if w < 800 { w = 800 }
+    if h < 480 { h = 480 }
 		a.targetW = w
 		a.targetH = h
 		modules.WriteHeader(sw, sh)
