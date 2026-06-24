@@ -104,13 +104,13 @@ func GetIconPath() string {
 
 func ExtractIcon() {
 	path := GetIconPath()
-	if len(trayIcon) == 0 {
+	if len(launcherIconPNG) == 0 {
 		return
 	}
-	if err := os.WriteFile(path, trayIcon, 0644); err != nil {
+	if err := os.WriteFile(path, launcherIconPNG, 0644); err != nil {
 		Log(fmt.Sprintf("[ICON] Failed to extract: %v", err))
 	} else {
-		Log(fmt.Sprintf("[ICON] Extracted to %s (%d bytes)", path, len(trayIcon)))
+		Log(fmt.Sprintf("[ICON] Extracted to %s (%d bytes)", path, len(launcherIconPNG)))
 	}
 }
 

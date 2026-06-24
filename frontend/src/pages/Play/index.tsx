@@ -75,8 +75,9 @@ export default function PlayPage() {
         if (pct === -1) {
           setPageState('error');
           setHasError(true);
-          setStatusText(msg);
-          setErrorCountdown(spd === 'ERROR' ? _dl : 0);
+          const countdown = spd === 'ERROR' ? _dl : 0;
+          setStatusText(tPhase(msg) + ' ' + countdown);
+          setErrorCountdown(countdown);
         } else if (pct === -2) {
           setPageState('error');
           setHasError(true);
