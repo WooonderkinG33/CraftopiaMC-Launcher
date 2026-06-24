@@ -202,11 +202,21 @@ rm -f "${BIN}.old"
 func applyUpdateWindows(exe, downloadedPath, pidFile string) error {
 	scriptPath := filepath.Join(OSInfo.DataDir, "runtime", "update.bat")
 	script := fmt.Sprintf(`@echo off
+setlocal
+set "EXE=%s"
+set "NEW=%s"
+set "PIDFILE=%s"
+set /p PID=<"%%PIDFILE%%"
 :wait
-if exist "%s" timeout /t 1 /nobreak >nul & goto wait
-move /y "%s" "%s"
-start "" "%s"
-`, pidFile, downloadedPath, exe, exe)
+tasklist /fi "pid eq %%PID%%" 2>nul | find "%%PID%%" >nul
+if not errorlevel 1 ping -n 2 127.0.0.1 >nul & goto wait
+move /y "%%EXE%%" "%%EXE%%.old"
+move /y "%%NEW%%" "%%EXE%%"
+start "" "%%EXE%%"
+ping -n 3 127.0.0.1 >nul
+del "%%EXE%%.old" 2>nul
+del "%%PIDFILE%%" 2>nul
+`, exe, downloadedPath, pidFile)
 	if err := os.WriteFile(scriptPath, []byte(script), 0644); err != nil {
 		return err
 	}
