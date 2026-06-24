@@ -240,6 +240,8 @@ func (a *App) ApplyUpdate() bool {
 		modules.Log(fmt.Sprintf("[UPDATE] Apply failed: %v", err))
 		return false
 	}
+	// Delete PID before quit so update script can proceed
+	modules.CleanupPidFile()
 	runtime.Quit(a.ctx)
 	return true
 }

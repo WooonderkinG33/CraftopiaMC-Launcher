@@ -101,7 +101,7 @@ export default function PlayPage() {
         } else if (msg === 'updateDone') {
           setPageState('updating');
           setProgress(100);
-          setStatusText(t.statusReady + ' ✓ ' + tPhase('updateDone'));
+          setStatusText('✓ ' + tPhase('updateDone'));
           setSpeed('');
           setHasError(false);
           setErrorCountdown(0);

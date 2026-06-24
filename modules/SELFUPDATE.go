@@ -181,10 +181,11 @@ func ApplyUpdate(downloadedPath string) error {
 func applyUpdateLinux(exe, downloadedPath, pidFile string) error {
 	scriptPath := filepath.Join(OSInfo.DataDir, "runtime", "update.sh")
 	script := fmt.Sprintf(`#!/bin/bash
+sleep 1
 BIN="%s"
 UPDATE="%s"
 PIDFILE="%s"
-while [ -f "$PIDFILE" ]; do sleep 0.5; done
+while [ -f "$PIDFILE" ]; do sleep 0.3; done
 mv "$BIN" "${BIN}.old"
 mv "$UPDATE" "$BIN"
 chmod +x "$BIN"
