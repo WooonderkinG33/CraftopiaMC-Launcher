@@ -84,10 +84,7 @@ func (a *App) startup(ctx context.Context) {
 	}()
 
 	runtime.EventsOn(ctx, "showWindow", func(...interface{}) {
-		runtime.WindowShow(ctx)
-		runtime.WindowSetSize(ctx, a.targetW, a.targetH)
-		runtime.WindowCenter(ctx)
-		a.windowVisible = true
+		a.showOnTop()
 	})
 	runtime.EventsOn(ctx, "hideWindow", func(...interface{}) {
 		runtime.Hide(ctx)
@@ -98,10 +95,7 @@ func (a *App) startup(ctx context.Context) {
 			runtime.Hide(ctx)
 			a.windowVisible = false
 		} else {
-			runtime.WindowShow(ctx)
-			runtime.WindowSetSize(ctx, a.targetW, a.targetH)
-			runtime.WindowCenter(ctx)
-			a.windowVisible = true
+			a.showOnTop()
 		}
 	})
 	runtime.EventsOn(ctx, "quitApp", func(...interface{}) {
@@ -204,12 +198,21 @@ func (a *App) KillMinecraft() {
 	a.emit("MC_KILLED", 0, "", 0, 0)
 }
 
+func (a *App) showOnTop() {
+	runtime.WindowSetAlwaysOnTop(a.ctx, true)
+	runtime.WindowShow(a.ctx)
+	runtime.WindowSetSize(a.ctx, a.targetW, a.targetH)
+	runtime.WindowCenter(a.ctx)
+	a.windowVisible = true
+	go func() {
+		time.Sleep(500 * time.Millisecond)
+		runtime.WindowSetAlwaysOnTop(a.ctx, false)
+	}()
+}
+
 func (a *App) showWindowFromSecondInstance() {
-	if a.ctx != nil {
-		runtime.WindowShow(a.ctx)
-		runtime.WindowSetSize(a.ctx, a.targetW, a.targetH)
-		runtime.WindowCenter(a.ctx)
-		a.windowVisible = true
+	if a.ctx != nil && a.mcCmd == nil {
+		a.showOnTop()
 	}
 }
 
@@ -317,9 +320,7 @@ func (a *App) prepareRuntime() {
 	)
 	a.mcCmd = nil
 	// Show launcher when MC exits
-	runtime.WindowShow(a.ctx)
-	runtime.WindowSetSize(a.ctx, a.targetW, a.targetH)
-	runtime.WindowCenter(a.ctx)
+	a.showOnTop()
 	a.windowVisible = true
 	a.emit("MC_EXITED", 0, "", 0, 0)
 	modules.Log("[RUNTIME] MC closed, ready")
