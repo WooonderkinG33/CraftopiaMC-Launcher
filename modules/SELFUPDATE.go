@@ -189,7 +189,9 @@ while [ -f "$PIDFILE" ]; do sleep 0.3; done
 mv "$BIN" "${BIN}.old"
 mv "$UPDATE" "$BIN"
 chmod +x "$BIN"
-exec "$BIN"
+"$BIN" &
+sleep 2
+rm -f "${BIN}.old"
 `, exe, downloadedPath, pidFile)
 	if err := os.WriteFile(scriptPath, []byte(script), 0755); err != nil {
 		return err
