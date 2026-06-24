@@ -199,15 +199,10 @@ func (a *App) KillMinecraft() {
 }
 
 func (a *App) showOnTop() {
-	runtime.WindowSetAlwaysOnTop(a.ctx, true)
 	runtime.WindowShow(a.ctx)
 	runtime.WindowSetSize(a.ctx, a.targetW, a.targetH)
 	runtime.WindowCenter(a.ctx)
 	a.windowVisible = true
-	go func() {
-		time.Sleep(500 * time.Millisecond)
-		runtime.WindowSetAlwaysOnTop(a.ctx, false)
-	}()
 }
 
 func (a *App) showWindowFromSecondInstance() {
