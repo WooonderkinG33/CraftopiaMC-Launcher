@@ -14,7 +14,7 @@ import (
 	"craftopiamc-launcher/core"
 )
 
-const MinecraftPlayerName = "CRAFTOPIAMC_PLAYER"
+const MinecraftPlayerName = "CRAFTOPIAMC"
 
 var AssetVersion string // устанавливается из MINECRAFT.go после загрузки
 
