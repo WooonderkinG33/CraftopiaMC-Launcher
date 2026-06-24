@@ -10,7 +10,6 @@ var allowedRootDirs = map[string]bool{
 	"logs":      true,
 	"minecraft": true,
 	"runtime":   true,
-	"auth":      true,
 }
 
 var allowedFiles = map[string]map[string]bool{
@@ -115,7 +114,7 @@ func cleanSubDirectory(dirPath string, parentDir string, allowedFiles map[string
 
 func isAllowedRootFile(name string) bool {
 	switch name {
-	case ".storage.aes", "launcher", "launcher.exe", "launcher.pid", "launcher.new":
+	case ".storage.aes", "launcher", "launcher.exe", "launcher.pid", "launcher.new", "auth":
 		return true
 	}
 	return false
