@@ -144,7 +144,6 @@ func WaitForLaunch(cmd *exec.Cmd, launchCb func(), failCb func(error)) {
 }
 
 func buildJvmArgs(ramMB int) []string {
-	ramGB := ramMB / 1024
 	base := []string{
 		"-XX:+UseG1GC", "-XX:+ParallelRefProcEnabled", "-XX:MaxGCPauseMillis=200",
 		"-XX:+UnlockExperimentalVMOptions", "-XX:+DisableExplicitGC", "-XX:+AlwaysPreTouch",
@@ -161,11 +160,7 @@ func buildJvmArgs(ramMB int) []string {
 		base = append(base, "-Dcraftopiamc.iconPath="+iconPath)
 	}
 	base = append(base, "-Dcraftopiamc.launcherVersion="+core.AppVersion)
-	if ramGB < 4 {
-		return append([]string{fmt.Sprintf("-Xms%dM", ramMB), fmt.Sprintf("-Xmx%dM", ramMB)}, base...)
-	}
-	useMB := (ramGB - 2) * 1024
-	return append([]string{fmt.Sprintf("-Xms%dM", useMB), fmt.Sprintf("-Xmx%dM", useMB)}, base...)
+	return append([]string{fmt.Sprintf("-Xms%dM", ramMB), fmt.Sprintf("-Xmx%dM", ramMB)}, base...)
 }
 
 func buildClassPath() (string, error) {
