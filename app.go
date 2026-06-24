@@ -250,19 +250,41 @@ func (a *App) prepareRuntime() {
 	modules.Log("[RUNTIME] Starting pipeline")
 	a.emit("init", 0, "", 0, 0)
 
+	// Phase 0: Update check (0-5)
+	a.emit("updateCheck", 1, "", 0, 0)
+	info, err := modules.CheckForUpdate()
+	if err == nil && info != nil && info.Available {
+		modules.Log("[UPDATE] New version available, downloading...")
+		downloaded, err := modules.DownloadUpdate(func(pct int) {
+			a.emit("updating", 1+int(float64(pct)*0.04), "", 0, 0)
+		})
+		if err == nil {
+			a.emit("updateCheck", 100, "", 0, 0)
+			time.Sleep(200 * time.Millisecond)
+			modules.ApplyUpdate(downloaded)
+			modules.CleanupPidFile()
+			runtime.Quit(a.ctx)
+			return
+		}
+		modules.Log(fmt.Sprintf("[UPDATE] Download failed: %v, continuing", err))
+	}
+	a.emit("updateCheck", 100, "", 0, 0)
+
+	// Phase 1: Java (5-25)
 	a.retryPhase("Java", func() error {
 		return modules.PrepareRuntimeWithStatus(func(key string, pct int, speed string, dl int64, total int64) {
-			a.emit(key, int(float64(pct)*0.20), speed, dl, total)
+			a.emit(key, 5+int(float64(pct)*0.20), speed, dl, total)
 		})
 	})
 	if a.ctx == nil { return }
 
+	// Phase 2: Minecraft + Fabric (25-80)
 	modules.PrepareMinecraft(func(key string, pct int, speed string, dl int64, total int64) {
-		a.emit(key, 20+int(float64(pct)*0.60), speed, dl, total)
+		a.emit(key, 25+int(float64(pct)*0.55), speed, dl, total)
 	})
 	if a.ctx == nil { return }
 
-	// Mods 80-95
+	// Phase 3: Mods (80-95)
 	a.retryPhase("Mods", func() error {
 		return modules.SyncMods(func(key string, pct int, speed string, dl int64, total int64) {
 			a.emit(key, 80+int(float64(pct)*0.15), speed, dl, total)

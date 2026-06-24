@@ -125,17 +125,6 @@ export default function PlayPage() {
     }
   }, [tPhase]);
 
-  // Auto-check update on startup
-  useEffect(() => {
-    if (window.go?.main?.App?.CheckForUpdate) {
-      window.go.main.App.CheckForUpdate().then((info: any) => {
-        if (info && info.available && window.go?.main?.App?.ApplyUpdate) {
-          window.go.main.App.ApplyUpdate().catch(() => {});
-        }
-      }).catch(() => {});
-    }
-  }, []);
-
   const handleLaunchToggle = () => {
     if (pageState === 'done') {
       if (window.go?.main?.App?.KillMinecraft) {

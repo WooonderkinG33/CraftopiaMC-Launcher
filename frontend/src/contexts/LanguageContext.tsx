@@ -58,6 +58,7 @@ export const dict = {
     statusResetting: "ГОТОВ К ПЕРЕУСТАНОВКЕ",
     updating: "Обновление...",
     updateDone: "Лаунчер будет перезапущен",
+    updateCheck: "Проверка обновлений",
   },
   en: {
     sidebarPlay: "Play",
@@ -114,6 +115,7 @@ export const dict = {
     statusResetting: "READY FOR REINSTALL",
     updating: "Updating...",
     updateDone: "Launcher will restart",
+    updateCheck: "Checking for updates",
   }
 };
 
