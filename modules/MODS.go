@@ -43,7 +43,7 @@ func SyncMods(statusCb func(key string, pct int, speed string, dl int64, total i
 	type modInfo struct{ path, hash string }
 	var cdnMods []modInfo
 	for _, f := range allFiles {
-		if strings.HasPrefix(f.Path, "launcher-runtime/mods/") && strings.HasSuffix(f.Path, ".jar") {
+		if strings.HasPrefix(f.Path, "launcher/") && strings.HasSuffix(f.Path, ".jar") {
 			cdnMods = append(cdnMods, modInfo{path: f.Path, hash: f.Hash})
 		}
 	}
