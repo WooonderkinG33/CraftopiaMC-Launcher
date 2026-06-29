@@ -131,7 +131,7 @@ export default function DesktopLayout({ children, initialRamMB, initialMaxRam, o
               className="w-[34px] h-[34px] flex items-center justify-center text-[#4B5563] hover:text-white hover:bg-white/5 rounded-lg transition-all cursor-pointer relative group"
             >
               <LifeBuoy className="w-[18px] h-[18px] transition-all group-hover:rotate-12" strokeWidth={2} />
-              <div className="absolute right-0 top-[calc(100%+8px)] opacity-0 group-hover:opacity-100 transition-opacity duration-150 ease-in-out bg-[#1C1F26] text-white text-[10px] py-1 px-2.5 rounded-md shadow-[0_4px_24px_rgba(0,0,0,0.5)] border border-white/[0.04] pointer-events-none z-50 whitespace-nowrap font-medium flex items-center uppercase tracking-wider">
+              <div className="absolute right-0 top-[calc(100%+8px)] opacity-0 group-hover:opacity-100 transition-opacity duration-150 ease-in-out bg-[#1C1F26] text-white text-[10px] py-1 px-2.5 rounded-md shadow-[0_4px_24px_rgba(0,0,0,0.5)] border border-white/[0.04] pointer-events-none z-50 font-medium uppercase tracking-wider max-w-[160px] line-clamp-2">
                 {t.sidebarSupport}
               </div>
             </a>
@@ -141,7 +141,7 @@ export default function DesktopLayout({ children, initialRamMB, initialMaxRam, o
               className="w-[34px] h-[34px] flex items-center justify-center text-[#4B5563] hover:text-[#94A3B8] hover:bg-white/5 rounded-lg transition-all cursor-pointer relative group"
             >
               <Settings className="w-[18px] h-[18px] transition-all group-hover:rotate-45" strokeWidth={2} />
-              <div className="absolute right-0 top-[calc(100%+8px)] opacity-0 group-hover:opacity-100 transition-opacity duration-150 ease-in-out bg-[#1C1F26] text-white text-[10px] py-1 px-2.5 rounded-md shadow-[0_4px_24px_rgba(0,0,0,0.5)] border border-white/[0.04] pointer-events-none z-50 whitespace-nowrap font-medium flex items-center uppercase tracking-wider">
+              <div className="absolute right-0 top-[calc(100%+8px)] opacity-0 group-hover:opacity-100 transition-opacity duration-150 ease-in-out bg-[#1C1F26] text-white text-[10px] py-1 px-2.5 rounded-md shadow-[0_4px_24px_rgba(0,0,0,0.5)] border border-white/[0.04] pointer-events-none z-50 font-medium uppercase tracking-wider max-w-[160px] line-clamp-2">
                 {t.sidebarSettings}
               </div>
             </button>
@@ -151,7 +151,7 @@ export default function DesktopLayout({ children, initialRamMB, initialMaxRam, o
               className="w-[34px] h-[34px] flex items-center justify-center text-[#4B5563] hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-all cursor-pointer relative group"
             >
               <Power className="w-[18px] h-[18px] transition-transform group-hover:scale-105" strokeWidth={2.5} />
-              <div className="absolute right-0 top-[calc(100%+8px)] opacity-0 group-hover:opacity-100 transition-opacity duration-150 ease-in-out bg-[#1C1F26] text-white text-[10px] py-1 px-2.5 rounded-md shadow-[0_4px_24px_rgba(0,0,0,0.5)] border border-white/[0.04] pointer-events-none z-50 whitespace-nowrap font-medium flex items-center uppercase tracking-wider">
+              <div className="absolute right-0 top-[calc(100%+8px)] opacity-0 group-hover:opacity-100 transition-opacity duration-150 ease-in-out bg-[#1C1F26] text-white text-[10px] py-1 px-2.5 rounded-md shadow-[0_4px_24px_rgba(0,0,0,0.5)] border border-white/[0.04] pointer-events-none z-50 font-medium uppercase tracking-wider max-w-[160px] line-clamp-2">
                 {t.sidebarExit}
               </div>
             </button>
