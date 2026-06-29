@@ -9,10 +9,6 @@ declare global {
     go?: {
       main?: {
         App?: {
-          GetSettings?: () => Promise<[string, number, number]>;
-          SaveSettings?: (language: string, ramMB: number) => Promise<boolean>;
-          StartRuntimePreparation?: () => void;
-          HideToTray?: () => void;
           KillMinecraft?: () => void;
           ResetLauncher?: () => Promise<boolean>;
         };
