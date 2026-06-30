@@ -59,6 +59,7 @@ export const dict = {
     updating: "Обновление...",
     updateDone: "Лаунчер будет перезапущен",
     updateCheck: "Проверка обновлений",
+    newsPlaceholder: "Здесь когда-то будут новости",
   },
   en: {
     sidebarPlay: "Play",
@@ -116,6 +117,7 @@ export const dict = {
     updating: "Updating...",
     updateDone: "Launcher will restart",
     updateCheck: "Checking for updates",
+    newsPlaceholder: "News will be here someday",
   }
 };
 
